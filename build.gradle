@@ -1,0 +1,91 @@
+buildscript {
+	repositories {
+		maven { url = 'https://maven.minecraftforge.net' }
+		maven { url = 'https://repo.spongepowered.org/maven' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+	}
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+// version in gradle.properties
+group = 'gdavid.psitweaker'
+archivesBaseName = 'psitweaker'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+	mappings channel: 'official', version: mc_version
+	runs {
+		client {
+			workingDirectory project.file('run')
+			mods {
+				psitweaker { source sourceSets.main }
+			}
+		}
+	}
+}
+
+sourceSets.main {
+	java { srcDir "EvalEx/src/main/java" }
+	resources { srcDir 'src/generated/resources' }
+}
+
+repositories {
+	maven { url "https://maven.blamejared.com/" }
+}
+
+dependencies {
+	minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-${forge_version}"
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	
+	compileOnly("org.projectlombok:lombok:1.18.42")
+	annotationProcessor("org.projectlombok:lombok:1.18.42")
+	
+	compileOnly fg.deobf("vazkii.psi:Psi:${psi_version}")
+	runtimeOnly fg.deobf("vazkii.psi:Psi:${psi_version}")
+
+	runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+}
+
+mixin {
+	add sourceSets.main, "psitweaker.refmap.json"
+	config 'psitweaker.mixins.json'
+}
+
+jar {
+	manifest {
+		attributes([
+			"Specification-Title": "psitweaker",
+			"Specification-Vendor": "gdavid",
+			"Specification-Version": "1",
+			"Implementation-Title": project.name,
+			"Implementation-Version": "${version}",
+			"Implementation-Vendor" :"gdavid",
+			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+			"MixinConfigs": "psitweaker.mixins.json"
+		])
+	}
+}
+
+build.dependsOn('reobfJar')
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact jar
+		}
+	}
+	repositories {
+		maven {
+			url "file:///${project.projectDir}/mcmodsrepo"
+		}
+	}
+}

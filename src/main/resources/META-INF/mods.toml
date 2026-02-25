@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="GNU LGPLv3"
+logoFile="logo.png"
+issueTrackerURL="https://github.com/gdavid04/PsiTweaker/issues"
+displayURL="https://github.com/gdavid04/PsiTweaker"
+authors="GDavid"
+[[mods]]
+modId="psitweaker"
+version="${file.jarVersion}"
+displayName="PsiTweaker"
+description='''
+A Psi addon that makes some things configurable
+'''
+[[dependencies.psitweaker]]
+	modId="forge"
+    mandatory=true
+    versionRange="[43.3.0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.psitweaker]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.psitweaker]]
+    modId="psi"
+    mandatory=true
+    versionRange="[1.19-101,)"
+    ordering="AFTER"
+    side="BOTH"

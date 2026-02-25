@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"minVersion": "0.8.3",
+	"package": "gdavid.psitweaker.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "psitweaker.refmap.json",
+	"mixins": [
+		"ItemSpellBullet$SpellAcceptorMixin",
+		"PlayerDataMixin"
+	],
+	"client": [ ]
+}
