@@ -8,31 +8,33 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Get Release
-      id: get_release
-      uses: bruceadams/get-release@v1.2.2
-      env:
-        GITHUB_TOKEN: ${{github.token}}
-    - name: JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: adopt
-        java-version: 17
-    - name: Cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/caches
-        key: ${{runner.os}}-gradle-${{hashFiles('build.gradle')}}
-    - name: Gradle Build
-      run: ./gradlew -Pversion=${{steps.get_release.outputs.tag_name}} build
-    - name: Publish
-      uses: Kir-Antipov/mc-publish@v3.3
-      with:
-        curseforge-id: 1470892
-        curseforge-token: ${{secrets.CURSEFORGE_API_KEY}}
-        modrinth-id: OfPgTPyY
-        modrinth-token: ${{secrets.MODRINTH_API_KEY}}
-        github-token: ${{github.token}}
-        java: 17
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Get Release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+      - name: JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: 17
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{runner.os}}-gradle-${{hashFiles('build.gradle')}}
+      - name: Gradle Build
+        run: ./gradlew -Pversion=${{steps.get_release.outputs.tag_name}} build
+      - name: Publish
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          curseforge-id: 1470892
+          curseforge-token: ${{secrets.CURSEFORGE_API_KEY}}
+          modrinth-id: OfPgTPyY
+          modrinth-token: ${{secrets.MODRINTH_API_KEY}}
+          github-token: ${{github.token}}
+          java: 17
