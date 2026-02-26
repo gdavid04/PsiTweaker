@@ -22,7 +22,7 @@ public abstract class PlayerDataMixin {
 		}
 		expr = expr.with("base", base)
 				.with("health", player.getHealth())
-				.with("maxhealth", player.getHealth())
+				.with("maxhealth", player.getMaxHealth())
 				.with("armor", player.getArmorValue())
 				.with("loopcasting", self.loopcasting);
 		if (psi) {
