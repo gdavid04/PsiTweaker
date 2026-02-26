@@ -52,7 +52,7 @@ public abstract class PlayerDataMixin {
 		}
 	}
 	
-	@ModifyArg(method = "deductPsi(IIZZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), index = 1)
+	@ModifyArg(method = "deductPsi(IIZZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true), index = 1)
 	private float overflowDamage(float dmg) {
 		try {
 			return psiTweaker$withVars(Config.instance.eOverflowDamage, dmg, true)
